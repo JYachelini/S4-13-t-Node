@@ -36,11 +36,11 @@ export class GoogleStrategy extends ConfigServer {
       {
         clientID: this.getEnvironment('GOOGLE_CLIENT_ID')!,
         clientSecret: this.getEnvironment('GOOGLE_CLIENT_SECRET')!,
-        callbackURL:
-          this.NODE_ENV == 'prod'
-            ? 'https://s4-13-t-node-production.up.railway.app/login/google/callback'
-            : 'http://localhost:8080/login/google/callback',
-        // callbackURL: 'http://localhost:8080/login/google/callback',
+        // callbackURL:
+        //   this.NODE_ENV == 'prod'
+        //     ? 'https://s4-13-t-node-production.up.railway.app/login/google/callback'
+        //     : 'http://localhost:8080/login/google/callback',
+        callbackURL: 'https://s4-13-t-node-production.up.railway.app/login/google/callback',
         passReqToCallback: true,
       },
       this.validate
