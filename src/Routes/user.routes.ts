@@ -22,6 +22,13 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
       }
     )
 
+    this.router.get(
+      '/myinfo',
+      this.middleware.passAuth('jwt', { session: false }),
+      (req, res, next) => this.middleware.getAccessToken(req, res, next),
+      (req, res) => this.controller.getByAccessToken(req, res)
+    )
+
     this.router
       .route('/user/:id')
       .get((req, res) => {

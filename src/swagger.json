@@ -628,6 +628,20 @@
             "description": "A token for provide the user ID and the role.",
             "type": "string",
             "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The value of comment",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": true
           }
         ],
         "responses": {
@@ -793,6 +807,25 @@
             "schema": {
               "type": "object",
               "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User register.",
+            "schema": {
+              "type": "object",
+              "properties": {
                 "status": {
                   "type": "number",
                   "default": 200
@@ -815,11 +848,6 @@
                 }
               }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User register."
           },
           "400": {
             "$ref": "#/responses/BadRequest"

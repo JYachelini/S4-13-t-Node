@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { IUser } from '../Interfaces/user.interfaces'
 import { UserService } from '../Services/user.service'
 import { HttpResponse } from '../Utils/http.response'
 
@@ -7,6 +8,15 @@ export class UserController {
     private readonly userService: UserService = new UserService(),
     private readonly httpResponse: HttpResponse = new HttpResponse()
   ) {}
+
+  async getByAccessToken(req: Request, res: Response) {
+    try {
+      const { id, username, role, email, avatar_url } = req.user as IUser
+      return res.json({ id, username, role, email, avatar_url })
+    } catch (error) {
+      return this.httpResponse.Error(res, error)
+    }
+  }
 
   async create(req: Request, res: Response) {
     try {
@@ -24,8 +34,8 @@ export class UserController {
         return this.httpResponse.BadRequest(res, { message: 'Email already exist.' })
       }
 
-      const result = await this.userService.create(user)
-      return this.httpResponse.Ok(res, { message: 'User Created Successfully.', user: result })
+      const { email, id, username } = await this.userService.create(user)
+      return this.httpResponse.Ok(res, { message: 'User Created Successfully.', user: { email, id, username } })
     } catch (error) {
       return this.httpResponse.Error(res, error)
     }
