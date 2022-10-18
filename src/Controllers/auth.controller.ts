@@ -43,7 +43,7 @@ export class AuthController extends AuthService {
       res.cookie('access_token', encode.access_token, { maxAge: 60000 * 15 })
       res.cookie('refresh_token', encode.refresh_token, { maxAge: 60000 * 86400 })
       if (this.NODE_ENV == 'prod') {
-        res.redirect('http://localhost:3000/')
+        res.redirect('https://s413t.vercel.app/')
       } else {
         res.write(JSON.stringify(encode))
         res.end()
