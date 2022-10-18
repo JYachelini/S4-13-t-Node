@@ -4,7 +4,9 @@ import { IBaseDTO } from './base.interfaces'
 
 export interface ILikeDTO extends IBaseDTO {
   user: User
+  userId: number
   post: Post
+  postId: number
 }
 
 export interface ILike extends ILikeDTO {}

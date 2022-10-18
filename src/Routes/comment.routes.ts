@@ -20,6 +20,7 @@ export class CommentRouter extends BaseRouter<CommentController, CommentMiddlewa
       '/comment/:id/reply',
       this.middleware.passAuth('jwt', { session: false }),
       (req, res, next) => this.middleware.getAccessToken(req, res, next),
+      (req, res, next) => this.middleware.replyCommentValidator(req, res, next),
       (req, res) => this.controller.replyComment(req, res)
     )
   }

@@ -10,10 +10,16 @@ export class Reply extends BaseEntity implements IReplyDTO {
   reply: string
 
   @ManyToOne(() => User, user => user.replys)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   user?: User
 
+  @Column()
+  userId: number
+
   @ManyToOne(() => Comment, comment => comment.replys)
-  @JoinColumn({ name: 'comment_id' })
+  @JoinColumn()
   comment?: Comment
+
+  @Column()
+  commentId: number
 }

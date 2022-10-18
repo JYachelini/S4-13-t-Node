@@ -34,7 +34,7 @@ export class CommentController extends ConfigServer {
       const user = req.user as IUser
       const id = Number(req.params.id)
       const { reply } = req.body
-      const response = await this.commentService.replyComment({ user: user.id, comment: id, reply })
+      const response = await this.commentService.replyComment({ userId: user.id, commentId: id, reply })
       if (response.error) return this.httpResponse.BadRequest(res, response.error)
 
       return this.httpResponse.Ok(res, { ...response })

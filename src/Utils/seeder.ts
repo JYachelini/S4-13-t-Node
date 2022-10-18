@@ -76,12 +76,9 @@ class Seeder extends ConfigServer {
       for (let j = 0; j < 2; j++) {
         const comments = comment.create({
           comment: `Test comment ${j}`,
-          post: {
-            id: i + 1,
-          },
-          user: {
-            id: 1,
-          },
+          postId: i + 1,
+
+          userId: 1,
         })
         await comment.save(comments)
         console.log(`Comment ${j} in Post ${i} created.`)
@@ -99,12 +96,9 @@ class Seeder extends ConfigServer {
       for (let j = 0; j < 2; j++) {
         const replys = reply.create({
           reply: `Test reply ${j}`,
-          user: {
-            id: 1,
-          },
-          comment: {
-            id: i + 2,
-          },
+          userId: 1,
+
+          commentId: i + 2,
         })
         await reply.save(replys)
         console.log(`Reply ${j} in Comment ${i} created.`)

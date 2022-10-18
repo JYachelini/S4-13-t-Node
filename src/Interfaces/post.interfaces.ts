@@ -1,3 +1,4 @@
+import { Like } from '../Entities/like.entity'
 import { User } from '../Entities/user.entity'
 import { IBaseDTO } from './base.interfaces'
 
@@ -11,6 +12,7 @@ export interface IPostDTO extends IBaseDTO {
 export interface IPost extends IPostDTO {
   likesCount: number
   commentsCount: number
+  likes?: Like[]
 }
 
 export interface UpdatePost {

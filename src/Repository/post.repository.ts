@@ -29,4 +29,12 @@ export class PostRepository extends BaseRepository<IPost> {
 
     return await builder.where(query).getOne()
   }
+
+  async findWithLikes(query: Query): Promise<IPost | null> {
+    const builder = (await this.repository).createQueryBuilder('post')
+
+    builder.leftJoinAndSelect('post.likes', 'likes')
+
+    return await builder.where(query).getOne()
+  }
 }

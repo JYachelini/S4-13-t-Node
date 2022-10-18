@@ -6,8 +6,10 @@ export interface IReplyDTO extends BaseDTO {
   reply: string
 
   user?: User
+  userId?: number
 
   comment?: Comment
+  commentId?: number
 }
 
 export interface IReply extends IReplyDTO {}

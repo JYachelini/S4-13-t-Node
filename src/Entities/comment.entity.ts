@@ -11,12 +11,18 @@ export class Comment extends BaseEntity implements ICommentDTO {
   comment: string
 
   @ManyToOne(() => User, user => user.comments)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn()
   user: User
 
+  @Column()
+  userId: number
+
   @ManyToOne(() => Post, post => post.comments)
-  @JoinColumn({ name: 'post_id' })
+  @JoinColumn()
   post: Post
+
+  @Column()
+  postId: number
 
   @OneToMany(() => Reply, reply => reply.comment)
   replys: Reply[]

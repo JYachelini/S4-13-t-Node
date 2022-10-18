@@ -6,8 +6,10 @@ export interface ICommentDTO extends BaseDTO {
   comment: string
 
   user?: User
+  userId?: number
 
   post?: Post
+  postId?: number
 }
 
 export interface IComment extends ICommentDTO {}

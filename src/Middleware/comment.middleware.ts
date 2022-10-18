@@ -1,4 +1,7 @@
+import { validate } from 'class-validator'
 import { NextFunction, Request, Response } from 'express'
+import { ReplyDTO } from '../DTO/reply.dto'
+import { IReply } from '../Interfaces/reply.interface'
 import { RequestUser } from '../Interfaces/user.interfaces'
 import { CommentService } from '../Services/comment.service'
 import { BaseMiddleware } from './base.middleware'
@@ -20,5 +23,21 @@ export class CommentMiddleware extends BaseMiddleware {
     } else {
       return this.httpResponse.Unauthorized(res, 'Unauthorized')
     }
+  }
+
+  replyCommentValidator(req: Request, res: Response, next: NextFunction) {
+    const { reply }: IReply = req.body
+
+    const valid = new ReplyDTO()
+
+    valid.reply = reply
+
+    validate(valid, { validationError: { target: false } }).then(err => {
+      if (err.length > 0) {
+        return this.httpResponse.BadRequest(res, err)
+      } else {
+        next()
+      }
+    })
   }
 }

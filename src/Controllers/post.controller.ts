@@ -74,7 +74,7 @@ export class PostController extends ConfigServer {
     try {
       const user = req.user as IUser
       const id = Number(req.params.id)
-      const response = await this.postService.like({ user: user.id, post: id })
+      const response = await this.postService.like({ userId: user.id, postId: id })
       if (response.error) return this.httpResponse.BadRequest(res, response.error)
       return this.httpResponse.Ok(res, { ...response })
     } catch (error) {
@@ -87,7 +87,7 @@ export class PostController extends ConfigServer {
       const user = req.user as IUser
       const id = Number(req.params.id)
       const { comment } = req.body
-      const response = await this.postService.comment({ user: user.id, post: id, comment })
+      const response = await this.postService.comment({ userId: user.id, postId: id, comment })
       if (response.error) return this.httpResponse.BadRequest(res, response.error)
       return this.httpResponse.Ok(res, { ...response })
     } catch (error) {
