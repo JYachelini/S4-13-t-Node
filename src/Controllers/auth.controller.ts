@@ -45,8 +45,9 @@ export class AuthController extends AuthService {
       if (this.NODE_ENV == 'prod') {
         res.redirect('https://s413t.vercel.app/')
       } else {
-        res.write(JSON.stringify(encode))
-        res.end()
+        res.redirect('http://localhost:3000/')
+        // res.write(JSON.stringify(encode))
+        // res.end()
       }
     } catch (error) {
       return this.httpResponse.Error(res, error)
