@@ -38,7 +38,10 @@ export class FacebookStrategy extends AuthService {
       {
         clientID: this.getEnvironment('FACEBOOK_APP_ID')!,
         clientSecret: this.getEnvironment('FACEBOOK_APP_SECRET')!,
-        callbackURL: 'http://localhost:8080/login/facebook/callback',
+        callbackURL:
+          this.NODE_ENV == 'prod'
+            ? 'https://s4-13-t-node-production.up.railway.app/login/facebook/callback'
+            : 'http://localhost:8080/login/facebook/callback',
         // callbackURL: 'http://localhost:8080/login/facebook/callback',
         passReqToCallback: true,
         profileFields: ['id', 'displayName', 'email', 'photos'],
