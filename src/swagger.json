@@ -1,0 +1,1354 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API S4-13-T",
+    "description": "API Doc of team S4-13-T of NoCountry. **IMPORTANTE** Todas las respuestas retornan un objecto con 'statusCode', 'statusMsg' y 'data'. Todo lo que se mande a las respuestas van a estar en 'data'. Tener en cuenta que algunos datos no van a estar en la respuesta original.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "definitions": {
+    "base_model": {
+      "properties": {
+        "id": {
+          "type": "number",
+          "readOnly": true,
+          "minimum": 1
+        },
+        "created_at": {
+          "type": "string",
+          "readOnly": true
+        },
+        "updated_at": {
+          "type": "string",
+          "readOnly": true
+        },
+        "deleted_at": {
+          "type": "string",
+          "default": "null",
+          "readOnly": true
+        }
+      }
+    },
+    "user": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        }
+      ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "avatar_url": {
+          "type": "string",
+          "default": "https://loremflickr.com/640/480/cats"
+        },
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "array",
+          "enum": ["User", "Admin"],
+          "default": ["User"],
+          "readOnly": true
+        },
+        "refresh_token": {
+          "type": "string",
+          "readOnly": true
+        },
+        "google_id": {
+          "type": "string",
+          "readOnly": true
+        },
+        "facebook_id": {
+          "type": "string",
+          "readOnly": true
+        },
+        "posts": {
+          "type": "array",
+          "$ref": "#/definitions/post",
+          "readOnly": true
+        },
+        "likes": {
+          "type": "array",
+          "$ref": "#/definitions/likes",
+          "readOnly": true
+        },
+        "favorites": {
+          "type": "array",
+          "$ref": "#/definitions/favorites",
+          "readOnly": true
+        }
+      }
+    },
+    "post": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        }
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "media_url": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "likesCount": {
+          "type": "number",
+          "default": 0,
+          "readOnly": true
+        },
+        "commentsCount": {
+          "type": "number",
+          "default": 0,
+          "readOnly": true
+        },
+        "user": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/user"
+          },
+          "readOnly": true
+        },
+        "comments": {
+          "type": "array",
+          "$ref": "#/definitions/comments",
+          "readOnly": true
+        }
+      }
+    },
+    "comments": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        }
+      ],
+      "properties": {
+        "comment": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/user"
+          }
+        },
+        "post_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/post"
+          }
+        },
+        "replys": {
+          "type": "array",
+          "$ref": "#/definitions/reply",
+          "readOnly": true
+        }
+      }
+    },
+    "reply": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        }
+      ],
+      "properties": {
+        "reply": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/user"
+          }
+        },
+        "comment_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/comments"
+          }
+        }
+      }
+    },
+    "likes": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        }
+      ],
+      "properties": {
+        "user_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/user"
+          }
+        },
+        "post_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/post"
+          }
+        }
+      }
+    },
+    "favorites": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/base_model"
+        }
+      ],
+      "properties": {
+        "user_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/user"
+          }
+        },
+        "post_id": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/post"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "posts",
+      "description": "Posts of app"
+    },
+    {
+      "name": "comment",
+      "description": "Comments of posts"
+    },
+    {
+      "name": "auth",
+      "description": "Authentication of app"
+    },
+    {
+      "name": "users",
+      "description": "Users of app"
+    }
+  ],
+  "paths": {
+    "/post": {
+      "get": {
+        "tags": ["posts"],
+        "summary": "Get posts with a pagination.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "page of posts",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "description": "size of posts",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "description": "change between return older posts or newer",
+            "enum": ["desc", "asc"],
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "word",
+            "description": "Search a post by the word given",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a page of posts. Default page 1 with size of 20 posts.",
+            "schema": {
+              "properties": {
+                "posts": { "$ref": "#/definitions/post" },
+                "actual_page": {
+                  "type": "number",
+                  "default": 1
+                },
+                "size": {
+                  "type": "number",
+                  "default": 20
+                },
+                "total": {
+                  "type": "number"
+                },
+                "last_page": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["posts"],
+        "summary": "Create a new post.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The need values for create a post.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/post",
+              "discriminator": "id",
+              "properties": {
+                "tags": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "Post Created Successfully."
+                    },
+                    "post": { "$ref": "#/definitions/post" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/post/{id}": {
+      "get": {
+        "tags": ["posts"],
+        "summary": "Get post by ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1,
+            "description": "Post ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return post by ID",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "post": { "$ref": "#/definitions/post" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/responses/NotFound" }
+        }
+      },
+      "put": {
+        "tags": ["posts"],
+        "summary": "Update post by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1,
+            "description": "Post ID."
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and the role.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "At least one value for edit the post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "Post Updated Successfully."
+                    },
+                    "post": { "$ref": "#/definitions/post" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["posts"],
+        "summary": "Delete post by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1,
+            "description": "Post ID."
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and the role.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post deleted.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "Post Deleted Successfully."
+                    },
+                    "post": { "$ref": "#/definitions/post" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/post/{id}/like": {
+      "post": {
+        "tags": ["posts"],
+        "summary": "Like or dislike post by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1,
+            "description": "Post ID."
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and the role.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Like or dislike the post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "liked": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "likesCount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/post/{id}/comment": {
+      "post": {
+        "tags": ["posts"],
+        "summary": "Comment post by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1,
+            "description": "Post ID."
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and the role.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comment the post.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "commented": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string",
+                      "default": "Comment added."
+                    },
+                    "commentsCount": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/comment/{id}": {
+      "delete": {
+        "tags": ["comment"],
+        "summary": "Delete comment by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1,
+            "description": "Post ID."
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and the role.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete comment.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "$ref": "#/definitions/comments"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/comment/{id}/reply": {
+      "post": {
+        "tags": ["comment"],
+        "summary": "Reply comment by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1,
+            "description": "Post ID."
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and the role.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reply comment.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "$ref": "#/definitions/reply"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Register a new user.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Values for create a user.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "User Created Successfully."
+                    },
+                    "user": {
+                      "$ref": "#/definitions/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User register."
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Log In.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Values for log in with existing user.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logged in.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "acces_token": {
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/definitions/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/refresh": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Refresh the tokens",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "refresh_token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the tokens and user info",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "acces_token": {
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/definitions/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Logout",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "access_token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return message if user has logged out.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "Logout successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/login/google": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Loggin with Google",
+        "responses": {
+          "302": {
+            "description": "Redirect to public front end with values of tokens and user saved in cookies."
+          }
+        }
+      }
+    },
+    "/login/facebook": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Loggin with Facebook",
+        "responses": {
+          "302": {
+            "description": "Redirect to public front end with values of tokens and user saved in cookies."
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Return user by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User by ID",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/definitions/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["users"],
+        "summary": "Update your data (as user).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user"
+            },
+            "description": "Need at least one value."
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and verify if is the correct user.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User updated.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "User Updated."
+                    },
+                    "user": {
+                      "$ref": "#/definitions/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete user (as admin).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1
+          },
+          {
+            "in": "header",
+            "name": "access_token",
+            "description": "A token for provide the user ID and check the role.",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "default": "User Deleted."
+                    },
+                    "user": {
+                      "$ref": "#/definitions/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/user/{id}/posts": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Return posts of user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Posts of user.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "allOf": [{ "$ref": "#/definitions/user" }],
+                      "properties": {
+                        "posts": {
+                          "$ref": "#/definitions/post"
+                        },
+                        "total_posts": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "actual_page": {
+                      "type": "number",
+                      "default": 1
+                    },
+                    "size": {
+                      "type": "number",
+                      "default": 20
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/user/{id}/likes": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Return posts liked of user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return posts liked by user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "allOf": [{ "$ref": "#/definitions/user" }],
+                      "properties": {
+                        "likes": {
+                          "$ref": "#/definitions/post"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/user/{id}/favorites": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Return favorites posts of user.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "number",
+            "minimum": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return favorites posts liked by user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "number",
+                  "default": 200
+                },
+                "statusMsg": {
+                  "type": "string",
+                  "default": "Success."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "allOf": [{ "$ref": "#/definitions/user" }],
+                      "properties": {
+                        "favorites": {
+                          "type": "object",
+                          "properties": {
+                            "post": {
+                              "$ref": "#/definitions/post"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "NotFound": {
+      "description": "The resource was not found."
+    },
+    "Unauthorized": {
+      "description": "Unauthorized to do this action. Need a valid token."
+    },
+    "BadRequest": {
+      "description": "Bad arguments."
+    }
+  }
+}
