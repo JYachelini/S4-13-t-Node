@@ -4,10 +4,12 @@ import { AuthService } from '../Services/auth.service'
 import { Request } from 'express'
 import { VerifyCallback } from 'jsonwebtoken'
 import { UserService } from '../Services/user.service'
+import { ConfigServer } from '../Config/config'
 
 const userService: UserService = new UserService()
+// const authService: AuthService = new AuthService()
 
-export class GoogleStrategy extends AuthService {
+export class GoogleStrategy extends ConfigServer {
   async validate(req: Request, accessToken: string, refreshToken: string, profile: any, done: VerifyCallback) {
     const { email, displayName, id, picture = 'https://loremflickr.com/640/480/cats' } = profile
     const user_found = await userService.find({ email })
@@ -34,7 +36,11 @@ export class GoogleStrategy extends AuthService {
       {
         clientID: this.getEnvironment('GOOGLE_CLIENT_ID')!,
         clientSecret: this.getEnvironment('GOOGLE_CLIENT_SECRET')!,
-        callbackURL: 'http://localhost:8080/login/google/callback',
+        callbackURL:
+          this.NODE_ENV == 'prod'
+            ? 'https://s4-13-t-node-production.up.railway.app/login/google/callback'
+            : 'http://localhost:8080/login/google/callback',
+        // callbackURL: 'http://localhost:8080/login/google/callback',
         passReqToCallback: true,
       },
       this.validate
