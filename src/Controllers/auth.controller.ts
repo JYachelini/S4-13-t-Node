@@ -44,15 +44,18 @@ export class AuthController extends AuthService {
         maxAge: 60000 * 15,
         sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? 'vercel.app' : '.localhost',
+        domain: 'vercel.app',
+        // domain: this.NODE_ENV == 'prod' ? 'vercel.app' : '.localhost',
       })
       res.cookie('refresh_token', encode.refresh_token, {
         maxAge: 60000 * 86400,
         sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? 'vercel.app' : '.localhost',
+        domain: 'vercel.app',
+        // domain: this.NODE_ENV == 'prod' ? 'vercel.app' : '.localhost',
       })
-      res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t-msd3m2y9r-s4-13-t.vercel.app/' : 'http://localhost:3000/')
+      res.redirect('https://s413t-msd3m2y9r-s4-13-t.vercel.app/')
+      // res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t-msd3m2y9r-s4-13-t.vercel.app/' : 'http://localhost:3000/')
     } catch (error) {
       return this.httpResponse.Error(res, error)
     }
