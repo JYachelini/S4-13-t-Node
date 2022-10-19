@@ -52,7 +52,7 @@ export class AuthController extends AuthService {
         secure: true,
         domain: this.NODE_ENV == 'prod' ? 'vercel.app' : '.localhost',
       })
-      res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t-n01vao0bl-s4-13-t.vercel.app/' : 'http://localhost:3000/')
+      res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t-msd3m2y9r-s4-13-t.vercel.app/' : 'http://localhost:3000/')
     } catch (error) {
       return this.httpResponse.Error(res, error)
     }
