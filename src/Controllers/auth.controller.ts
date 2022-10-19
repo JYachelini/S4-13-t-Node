@@ -44,13 +44,13 @@ export class AuthController extends AuthService {
         maxAge: 60000 * 15,
         sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node-production.up.railway.app' : '.localhost',
+        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node.herokuapp.com' : '.localhost',
       })
       res.cookie('refresh_token', encode.refresh_token, {
         maxAge: 60000 * 86400,
         sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node-production.up.railway.app' : '.localhost',
+        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node.herokuapp.com' : '.localhost',
       })
       res.redirect(
         this.NODE_ENV == 'prod' ? 'https://incredible-brigadeiros-a41bd6.netlify.app/' : 'http://localhost:3000/'
