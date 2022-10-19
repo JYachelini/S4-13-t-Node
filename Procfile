@@ -1,1 +1,0 @@
-web: cross-env NODE_ENV=prod node dist/index.js

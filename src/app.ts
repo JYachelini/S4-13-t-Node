@@ -9,8 +9,6 @@ import { UserRouter } from './Routes/user.routes'
 import { LoginStrategy } from './Strategies/login.strategy'
 import { JwtStrategy } from './Strategies/jwt.strategy'
 import { AuthRouter } from './Routes/auth.routes'
-import { GoogleStrategy } from './Strategies/google.strategy'
-import { FacebookStrategy } from './Strategies/facebook.strategy'
 import { CommentRouter } from './Routes/comment.routes'
 
 export class Server extends ConfigServer {
@@ -37,14 +35,13 @@ export class Server extends ConfigServer {
 
     this.app.use(morgan('dev'))
     this.app.use(cors({ credentials: true, origin: true }))
-    this.app.set('trust proxy', 1)
 
     this.app.use(this.routers())
     this.listen()
   }
 
   passportUse() {
-    return [new LoginStrategy().use, new JwtStrategy().use, new GoogleStrategy().use, new FacebookStrategy().use]
+    return [new LoginStrategy().use, new JwtStrategy().use]
   }
 
   routers(): express.Router[] {

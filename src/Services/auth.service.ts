@@ -3,7 +3,7 @@ import { ConfigServer } from '../Config/config'
 import { UserService } from './user.service'
 import { BaseService } from './base.service'
 import { IUser } from '../Interfaces/user.interfaces'
-import { PayloadToken } from '../Interfaces/auth.interface'
+import { LoginSocialMedia, PayloadToken } from '../Interfaces/auth.interface'
 
 export class AuthService extends ConfigServer {
   constructor(
@@ -34,6 +34,19 @@ export class AuthService extends ConfigServer {
     }
 
     return null
+  }
+
+  async validateSocialMedia(data: LoginSocialMedia): Promise<IUser> {
+    const { email, family_name, given_name, picture, sub } = data
+    const user_found = await this.userService.find({ email })
+    if (user_found) return user_found
+
+    return await this.userService.create({
+      google_id: sub,
+      email,
+      username: `${given_name}.${family_name}.${sub}`,
+      avatar_url: picture,
+    })
   }
 
   private sing(payload: jwt.JwtPayload, jwt_secret: any, expiresIn: string) {

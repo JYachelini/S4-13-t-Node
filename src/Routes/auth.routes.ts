@@ -24,37 +24,6 @@ export class AuthRouter extends BaseRouter<AuthController, BaseMiddleware> {
         (req, res, next) => this.middleware.getAccessToken(req, res, next),
         (req, res) => this.controller.logout(req, res)
       )
-      .get('/login/google', this.middleware.passAuth('google', { session: false, scope: ['email', 'profile'] }))
-      .get(
-        '/login/google/callback',
-        this.middleware.passAuth('google', {
-          session: false,
-          // successRedirect: 'http://localhost:3000',
-          failureRedirect: '/login/failure',
-        }),
-        (req, res) => {
-          this.controller.loginSocialMedial(req, res)
-        }
-      )
-      // .get('/login/google/success', (req, res) => this.controller.loginSocialMedial(req, res))
-      .get(
-        '/login/facebook',
-        this.middleware.passAuth('facebook', { session: false, scope: ['email', 'user_location'] })
-      )
-      .get(
-        '/login/facebook/callback',
-        this.middleware.passAuth('facebook', { session: false, failureRedirect: '/login/failure' }),
-        (req, res) => {
-          this.controller.loginSocialMedial(req, res)
-        }
-      )
-      .get('/login/failure', (req, res) => {
-        this.httpResponse.BadRequest(res, 'Something went wrong.')
-      })
-    // .post('/login/google', (req, res) => {
-    //   console.log(req)
-    //   console.log(req.body)
-    //   res.json({ a: 'a' })
-    // })
+      .post('/login/social', (req, res) => this.controller.loginSocialMedia(req, res))
   }
 }
