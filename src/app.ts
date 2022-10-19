@@ -36,7 +36,7 @@ export class Server extends ConfigServer {
     this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
     this.app.use(morgan('dev'))
-    this.app.use(cors({ credentials: true, origin: 'https://incredible-brigadeiros-a41bd6.netlify.app' }))
+    this.app.use(cors({ credentials: true, origin: true }))
     this.app.set('trust proxy', 1)
 
     this.app.use(this.routers())
