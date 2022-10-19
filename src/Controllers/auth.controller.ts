@@ -42,17 +42,19 @@ export class AuthController extends AuthService {
       res.header('Content-Type', 'application/json')
       res.cookie('access_token', encode.access_token, {
         maxAge: 60000 * 15,
-        sameSite: false,
+        sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? '.railway.app' : '.localhost',
+        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node-production.up.railway.app' : '.localhost',
       })
       res.cookie('refresh_token', encode.refresh_token, {
         maxAge: 60000 * 86400,
-        sameSite: false,
+        sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? '.up.railway.app' : '.localhost',
+        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node-production.up.railway.app' : '.localhost',
       })
-      res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t.vercel.app/' : 'http://localhost:3000/')
+      res.redirect(
+        this.NODE_ENV == 'prod' ? 'https://incredible-brigadeiros-a41bd6.netlify.app/' : 'http://localhost:3000/'
+      )
     } catch (error) {
       return this.httpResponse.Error(res, error)
     }
