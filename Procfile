@@ -1,1 +1,1 @@
-web: tsc && cross-env NODE_ENV=prod node dist/index.js
+web: cross-env NODE_ENV=prod node dist/index.js
