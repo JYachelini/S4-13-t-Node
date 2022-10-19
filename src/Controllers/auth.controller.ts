@@ -44,13 +44,13 @@ export class AuthController extends AuthService {
         maxAge: 60000 * 15,
         sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node.herokuapp.com' : '.localhost',
+        domain: this.NODE_ENV == 'prod' ? 'vercel.app' : '.localhost',
       })
       res.cookie('refresh_token', encode.refresh_token, {
         maxAge: 60000 * 86400,
         sameSite: 'none',
         secure: true,
-        domain: this.NODE_ENV == 'prod' ? 's4-13-t-node.herokuapp.com' : '.localhost',
+        domain: this.NODE_ENV == 'prod' ? 'vercel.app' : '.localhost',
       })
       res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t-n01vao0bl-s4-13-t.vercel.app/' : 'http://localhost:3000/')
     } catch (error) {
