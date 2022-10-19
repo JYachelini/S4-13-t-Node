@@ -29,7 +29,10 @@ export class UserService extends BaseService {
   }
 
   async findByIdWithPosts(id: number, page: number, size: number, sort: string) {
-    return await this.userRepository.findWithPosts({ id }, { page, size, sort })
+    const user = await this.userRepository.findWithPosts({ id }, { page, size, sort })
+    user!.actual_page = Number(page)
+    user!.size = Number(size)
+    return { user }
   }
 
   async findByIdWithFavorites(id: number, page: number, size: number, sort: string) {

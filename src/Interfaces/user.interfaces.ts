@@ -28,6 +28,8 @@ export interface IUserDTO extends IBaseDTO {
 export interface IUser extends IUserDTO {
   password: string | null
   refresh_token?: string | null
+  actual_page?: number
+  size?: number
 }
 
 export interface RequestUser extends Express.User {

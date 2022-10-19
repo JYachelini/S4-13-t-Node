@@ -32,7 +32,7 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
     this.router
       .route('/user/:id')
       .get((req, res) => {
-        this.controller.find(req, res)
+        this.controller.findWithPosts(req, res)
       })
       .put(
         this.middleware.passAuth('jwt', { session: false }),

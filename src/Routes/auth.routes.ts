@@ -29,13 +29,14 @@ export class AuthRouter extends BaseRouter<AuthController, BaseMiddleware> {
         '/login/google/callback',
         this.middleware.passAuth('google', {
           session: false,
-          // successRedirect: 'http://localhost:3000/login',
+          // successRedirect: 'http://localhost:3000',
           failureRedirect: '/login/failure',
         }),
         (req, res) => {
           this.controller.loginSocialMedial(req, res)
         }
       )
+      // .get('/login/google/success', (req, res) => this.controller.loginSocialMedial(req, res))
       .get(
         '/login/facebook',
         this.middleware.passAuth('facebook', { session: false, scope: ['email', 'user_location'] })
@@ -50,5 +51,10 @@ export class AuthRouter extends BaseRouter<AuthController, BaseMiddleware> {
       .get('/login/failure', (req, res) => {
         this.httpResponse.BadRequest(res, 'Something went wrong.')
       })
+    // .post('/login/google', (req, res) => {
+    //   console.log(req)
+    //   console.log(req.body)
+    //   res.json({ a: 'a' })
+    // })
   }
 }

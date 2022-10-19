@@ -70,12 +70,7 @@ export class UserController {
       const id = Number(req.params.id)
       const user = await this.userService.findByIdWithPosts(id, Number(page), Number(size), String(sort))
 
-      if (user)
-        return this.httpResponse.Ok(res, {
-          user,
-          actual_page: Number(page),
-          size: Number(size),
-        })
+      if (user) return this.httpResponse.Ok(res, user)
 
       return this.httpResponse.NotFound(res, 'User not found.')
     } catch (error) {

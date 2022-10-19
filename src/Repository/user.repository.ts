@@ -17,6 +17,7 @@ export class UserRepository extends BaseRepository<IUser> {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.post', 'post')
       .loadRelationCountAndMap('user.total_posts', 'user.post')
+      .loadRelationCountAndMap('user.total_likes', 'user.likes')
       .where(query)
       .offset((page - 1) * size)
       .limit(size)

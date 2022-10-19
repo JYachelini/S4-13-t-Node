@@ -40,11 +40,31 @@ export class AuthController extends AuthService {
       }
 
       res.header('Content-Type', 'application/json')
-      res.cookie('access_token', encode.access_token, { maxAge: 60000 * 15 })
-      res.cookie('refresh_token', encode.refresh_token, { maxAge: 60000 * 86400 })
       if (this.NODE_ENV == 'prod') {
+        res.cookie('access_token', encode.access_token, {
+          maxAge: 60000 * 15,
+          sameSite: false,
+          secure: true,
+          domain: 'http://https://s4-13-t-node-production.up.railway.app/',
+        })
+        res.cookie('refresh_token', encode.refresh_token, {
+          maxAge: 60000 * 86400,
+          sameSite: false,
+          secure: true,
+          domain: 'http://https://s4-13-t-node-production.up.railway.app/',
+        })
         res.redirect('https://s413t.vercel.app/')
       } else {
+        res.cookie('access_token', encode.access_token, {
+          maxAge: 60000 * 15,
+          secure: true,
+          domain: 'http://localhost:8080',
+        })
+        res.cookie('refresh_token', encode.refresh_token, {
+          maxAge: 60000 * 86400,
+          secure: true,
+          domain: 'http://localhost:8080',
+        })
         res.redirect('http://localhost:3000/')
         // res.write(JSON.stringify(encode))
         // res.end()
