@@ -40,35 +40,19 @@ export class AuthController extends AuthService {
       }
 
       res.header('Content-Type', 'application/json')
-      if (this.NODE_ENV == 'prod') {
-        res.cookie('access_token', encode.access_token, {
-          maxAge: 60000 * 15,
-          sameSite: false,
-          secure: true,
-          domain: 'https://s4-13-t-node-production.up.railway.app',
-        })
-        res.cookie('refresh_token', encode.refresh_token, {
-          maxAge: 60000 * 86400,
-          sameSite: false,
-          secure: true,
-          domain: 'https://s4-13-t-node-production.up.railway.app',
-        })
-        res.redirect('https://s413t.vercel.app/')
-      } else {
-        res.cookie('access_token', encode.access_token, {
-          maxAge: 60000 * 15,
-          secure: true,
-          domain: 'http://localhost:8080',
-        })
-        res.cookie('refresh_token', encode.refresh_token, {
-          maxAge: 60000 * 86400,
-          secure: true,
-          domain: 'http://localhost:8080',
-        })
-        res.redirect('http://localhost:3000/')
-        // res.write(JSON.stringify(encode))
-        // res.end()
-      }
+      res.cookie('access_token', encode.access_token, {
+        maxAge: 60000 * 15,
+        sameSite: false,
+        secure: true,
+        domain: this.NODE_ENV == 'prod' ? '.railway.app' : '.localhost',
+      })
+      res.cookie('refresh_token', encode.refresh_token, {
+        maxAge: 60000 * 86400,
+        sameSite: false,
+        secure: true,
+        domain: this.NODE_ENV == 'prod' ? '.up.railway.app' : '.localhost',
+      })
+      res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t.vercel.app/' : 'http://localhost:3000/')
     } catch (error) {
       return this.httpResponse.Error(res, error)
     }
