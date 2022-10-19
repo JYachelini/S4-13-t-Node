@@ -52,9 +52,7 @@ export class AuthController extends AuthService {
         secure: true,
         domain: this.NODE_ENV == 'prod' ? 's4-13-t-node.herokuapp.com' : '.localhost',
       })
-      res.redirect(
-        this.NODE_ENV == 'prod' ? 'https://incredible-brigadeiros-a41bd6.netlify.app/' : 'http://localhost:3000/'
-      )
+      res.redirect(this.NODE_ENV == 'prod' ? 'https://s413t-n01vao0bl-s4-13-t.vercel.app/' : 'http://localhost:3000/')
     } catch (error) {
       return this.httpResponse.Error(res, error)
     }
