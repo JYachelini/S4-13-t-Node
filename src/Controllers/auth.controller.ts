@@ -45,13 +45,13 @@ export class AuthController extends AuthService {
           maxAge: 60000 * 15,
           sameSite: false,
           secure: true,
-          domain: 'http://https://s4-13-t-node-production.up.railway.app/',
+          domain: 'https://s4-13-t-node-production.up.railway.app',
         })
         res.cookie('refresh_token', encode.refresh_token, {
           maxAge: 60000 * 86400,
           sameSite: false,
           secure: true,
-          domain: 'http://https://s4-13-t-node-production.up.railway.app/',
+          domain: 'https://s4-13-t-node-production.up.railway.app',
         })
         res.redirect('https://s413t.vercel.app/')
       } else {
