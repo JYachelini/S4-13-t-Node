@@ -2,10 +2,14 @@ import { Query } from '../Interfaces/repository.interface'
 import { CreateUserDTO, RoleTypes, UpdateUser } from '../Interfaces/user.interfaces'
 import { UserRepository } from '../Repository/user.repository'
 import { BaseService } from './base.service'
+import { PostService } from './post.service'
 
 export class UserService extends BaseService {
   private readonly alias: string
-  constructor(private readonly userRepository: UserRepository = new UserRepository()) {
+  constructor(
+    private readonly userRepository: UserRepository = new UserRepository(),
+    private readonly postService: PostService = new PostService()
+  ) {
     super()
     this.alias = 'user'
   }
@@ -65,6 +69,17 @@ export class UserService extends BaseService {
       return { error: 'User not found or already deleted.' }
     }
     return { user: deleted.raw }
+  }
+
+  async countLikes(id: number) {
+    const posts = await this.postService.findAll({ user: id })
+    let likesCount = 0
+
+    for (const post of posts) {
+      likesCount = likesCount + post.likesCount
+    }
+
+    return likesCount
   }
 
   // async findByUsername(username: string) {

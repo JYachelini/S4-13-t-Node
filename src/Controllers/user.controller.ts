@@ -145,4 +145,14 @@ export class UserController {
       return this.httpResponse.Error(res, error)
     }
   }
+
+  async countLikes(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id)
+      const likesCount = await this.userService.countLikes(id)
+      return this.httpResponse.Ok(res, { likesCount })
+    } catch (error) {
+      return this.httpResponse.Error(res, error)
+    }
+  }
 }

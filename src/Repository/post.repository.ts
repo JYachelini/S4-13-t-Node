@@ -8,6 +8,14 @@ export class PostRepository extends BaseRepository<IPost> {
     super(Post)
   }
 
+  async findAll(query: Query): Promise<IPost[]> {
+    const builder = (await this.repository).createQueryBuilder('post')
+
+    builder.where(query)
+
+    return await builder.getMany()
+  }
+
   async findWithComments(query: Query): Promise<IPost | null> {
     const builder = (await this.repository).createQueryBuilder('post')
 

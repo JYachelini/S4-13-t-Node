@@ -50,6 +50,10 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
         }
       )
 
+    this.router.get('/user/:id/cantLikes', (req, res) => {
+      this.controller.countLikes(req, res)
+    })
+
     this.router.route('/user/:id/posts').get((req, res) => {
       this.controller.findWithPosts(req, res)
     })

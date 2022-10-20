@@ -25,7 +25,12 @@ export class PostController extends ConfigServer {
   async findAll(req: Request, res: Response) {
     try {
       const { page = '1', size = '20', sort = 'desc', word } = req.query
-      const [posts, total, last_page] = await this.postService.findAll(Number(page), Number(size), sort, word)
+      const [posts, total, last_page] = await this.postService.findAllWithPagination(
+        Number(page),
+        Number(size),
+        sort,
+        word
+      )
       return this.httpResponse.Ok(res, { posts, actual_page: Number(page), size: Number(size), total, last_page })
     } catch (error) {
       return this.httpResponse.Error(res, error)

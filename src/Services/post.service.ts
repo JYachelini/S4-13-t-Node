@@ -20,7 +20,7 @@ export class PostService {
   async create(post: IPost) {
     return await this.postRepository.create(post)
   }
-  async findAll(page: any = 1, size: any = 20, sort: any, word?: any) {
+  async findAllWithPagination(page: any = 1, size: any = 20, sort: any, word?: any) {
     const [posts, total] = await this.postRepository.list(this.alias, this.relation, {
       size,
       page,
@@ -30,6 +30,10 @@ export class PostService {
     })
     const last_page = Math.ceil(total / size)
     return [posts, total, last_page]
+  }
+
+  async findAll(query: Query) {
+    return await this.postRepository.findAll(query)
   }
 
   async find(query: Query, addSelect?: string) {
