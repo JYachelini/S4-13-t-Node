@@ -30,10 +30,13 @@ export class BaseRepository<T extends BaseEntity> extends ConfigServer implement
       builder.leftJoinAndSelect(`${alias}.${relation}`, relation)
     }
 
-    builder
-      .offset((page - 1) * size)
-      .limit(size)
-      .orderBy(`${alias}.created_at`, sort.toUpperCase())
+    builder.offset((page - 1) * size).limit(size)
+
+    if (sort === 'random') builder.orderBy('RANDOM()')
+
+    if (sort === 'desc' || sort === 'asc') builder.orderBy(`${alias}.created_at`, sort.toUpperCase())
+
+    if (sort === 'like') builder.orderBy(`${alias}.likesCount`, 'DESC')
 
     if (word && property) {
       builder.where(`${alias}.${property} like :word`, { word: `%${word}%` })

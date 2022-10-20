@@ -33,7 +33,7 @@ export class PostDTO extends BaseDTO implements IPostDTO {
   // user: User
 }
 
-const sort = ['asc', 'ASC', 'desc', 'DESC']
+const sort = ['asc', 'desc', 'like', 'random']
 
 export class getPostRequest {
   @IsOptional()
@@ -46,7 +46,7 @@ export class getPostRequest {
 
   @IsOptional()
   @MinLength(3)
-  @MaxLength(4)
+  @MaxLength(6)
   @IsIn(sort)
   sort: any
 }

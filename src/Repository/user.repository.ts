@@ -50,6 +50,7 @@ export class UserRepository extends BaseRepository<IUser> {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.favorites', 'favorites')
       .leftJoinAndSelect('favorites.post', 'post')
+      .leftJoinAndSelect('post.user', 'user_post')
       .where(query)
       .offset((page - 1) * size)
       .limit(size)
