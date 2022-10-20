@@ -30,6 +30,7 @@ export interface IUser extends IUserDTO {
   refresh_token?: string | null
   actual_page?: number
   size?: number
+  likesCount?: number
 }
 
 export interface RequestUser extends Express.User {

@@ -69,6 +69,8 @@ export class UserController {
       const { page = '1', size = '20', sort = 'desc' } = req.query
       const id = Number(req.params.id)
       const user = await this.userService.findByIdWithPosts(id, Number(page), Number(size), String(sort))
+      const likesCount = await this.userService.countLikes(id)
+      user.user!.likesCount = likesCount
 
       if (user) return this.httpResponse.Ok(res, user)
 
@@ -146,13 +148,13 @@ export class UserController {
     }
   }
 
-  async countLikes(req: Request, res: Response) {
-    try {
-      const id = Number(req.params.id)
-      const likesCount = await this.userService.countLikes(id)
-      return this.httpResponse.Ok(res, { likesCount })
-    } catch (error) {
-      return this.httpResponse.Error(res, error)
-    }
-  }
+  // async countLikes(req: Request, res: Response) {
+  //   try {
+  //     const id = Number(req.params.id)
+  //     const likesCount = await this.userService.countLikes(id)
+  //     return this.httpResponse.Ok(res, { likesCount })
+  //   } catch (error) {
+  //     return this.httpResponse.Error(res, error)
+  //   }
+  // }
 }
