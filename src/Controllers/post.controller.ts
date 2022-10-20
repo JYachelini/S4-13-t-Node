@@ -82,6 +82,19 @@ export class PostController extends ConfigServer {
     }
   }
 
+  async favorite(req: Request, res: Response) {
+    try {
+      const user = req.user as IUser
+      const id = Number(req.params.id)
+      const response = await this.postService.favorite({ userId: user.id, postId: id })
+      if (response.error) return this.httpResponse.BadRequest(res, response.error)
+
+      return this.httpResponse.Ok(res, { ...response })
+    } catch (error) {
+      return this.httpResponse.Error(res, error)
+    }
+  }
+
   async comment(req: Request, res: Response) {
     try {
       const user = req.user as IUser

@@ -1,6 +1,6 @@
 import { BaseEntity } from '../Entities/base.entity'
 import { DatabaseRepository, Query, SetsList } from '../Interfaces/repository.interface'
-import { EntityTarget, IsNull, Repository, UpdateResult } from 'typeorm'
+import { DeleteResult, EntityTarget, IsNull, Repository, UpdateResult } from 'typeorm'
 import { ConfigServer } from '../Config/config'
 
 export class BaseRepository<T extends BaseEntity> extends ConfigServer implements DatabaseRepository<T> {
@@ -73,5 +73,18 @@ export class BaseRepository<T extends BaseEntity> extends ConfigServer implement
       .returning('*')
       .execute()
     return builder
+  }
+
+  async delete(query: Query): Promise<DeleteResult> {
+    const { raw, affected } = await (
+      await this.repository
+    )
+      .createQueryBuilder()
+      .delete()
+      .where({ ...query, deleted_at: IsNull() })
+      .returning('*')
+      .execute()
+
+    return { raw, affected }
   }
 }

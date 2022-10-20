@@ -2,6 +2,7 @@ import { IPost, UpdatePost } from '../Interfaces/post.interfaces'
 import { Query } from '../Interfaces/repository.interface'
 import { PostRepository } from '../Repository/post.repository'
 import { CommentService } from './comment.service'
+import { FavoriteService } from './favorite.service'
 import { LikeService } from './like.service'
 
 export class PostService {
@@ -10,6 +11,7 @@ export class PostService {
   constructor(
     private readonly postRepository: PostRepository = new PostRepository(),
     private readonly likeService: LikeService = new LikeService(),
+    private readonly favoriteService: FavoriteService = new FavoriteService(),
     private readonly commentService: CommentService = new CommentService()
   ) {
     this.alias = 'post'
@@ -86,6 +88,36 @@ export class PostService {
     // if (updated.error) return { error: 'Error while increment likeCount on post with id: ' + postId }
 
     return { liked: true, message: 'Like added.', likesCount: post.likesCount + 1 }
+  }
+
+  async favorite(data: any) {
+    const { userId, postId } = data
+    // const post = await this.find({ id: data.post })
+    const post = await this.postRepository.findWithFavorites({ id: postId })
+    if (!post) return { error: 'Post not found.' }
+
+    const postFavorites = post.favorites!.map(favorite => {
+      return favorite.userId
+    })
+
+    if (postFavorites.includes(userId)) {
+      this.favoriteService.delete({ userId, postId })
+      // const deleted = await this.likeService.delete({ userId, postId })
+      // if (deleted.error) return { error: `Error while deleting Like on post ${postId} from user ${userId}` }
+
+      this.update({ id: postId }, { likesCount: post.likesCount - 1 })
+      // const updated = await this.update({ id: postId }, { likesCount: post.likesCount - 1 })
+      // if (updated.error) return { error: 'Error while decrease likeCount on post with id: ' + postId }
+      return { favorited: false, message: 'Post removed from favorites.' }
+    }
+
+    this.favoriteService.create(data)
+
+    this.update({ id: postId }, { likesCount: post.likesCount + 1 })
+    // const updated = await this.update({ id: postId }, { likesCount: post.likesCount + 1 })
+    // if (updated.error) return { error: 'Error while increment likeCount on post with id: ' + postId }
+
+    return { favorited: true, message: 'Post added to favorites.' }
   }
 
   async comment(data: any) {

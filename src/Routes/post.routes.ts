@@ -65,5 +65,12 @@ export class PostRouter extends BaseRouter<PostController, PostMiddleware> {
       (req, res, next) => this.middleware.getAccessToken(req, res, next),
       (req, res) => this.controller.comment(req, res)
     )
+
+    this.router.post(
+      '/post/:id/favorite',
+      this.middleware.passAuth('jwt', { session: false }),
+      (req, res, next) => this.middleware.getAccessToken(req, res, next),
+      (req, res) => this.controller.favorite(req, res)
+    )
   }
 }
