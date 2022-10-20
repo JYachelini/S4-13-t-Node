@@ -96,8 +96,6 @@ export class AuthService extends ConfigServer {
 
     const encode = await this.generateJWT(user)
 
-    await this.userService.update({ id: user.id }, { refresh_token: encode.refresh_token })
-
     return encode
   }
 }
