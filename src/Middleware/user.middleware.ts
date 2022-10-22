@@ -15,7 +15,7 @@ export class UserMiddleware extends BaseMiddleware {
 
     const user_found = await this.userService.find({ id })
 
-    if (user.sub === user_found?.id) {
+    if (user.id === user_found?.id) {
       next()
     } else {
       return this.httpResponse.Unauthorized(res), 'Unauthorized.'

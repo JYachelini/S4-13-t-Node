@@ -15,7 +15,7 @@ export class PostController extends ConfigServer {
       const user = req.user
       const post = req.body
       post.tags = post.tags.map((tag: any) => tag.toUpperCase())
-      post.user = user.sub
+      post.user = user.id
 
       const result = await this.postService.create(post)
       this.httpResponse.Ok(res, { message: 'Post Created Successfully.', post: result })

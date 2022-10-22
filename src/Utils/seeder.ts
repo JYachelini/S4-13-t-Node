@@ -66,98 +66,98 @@ class Seeder extends ConfigServer {
     await post.save({
       title: 'mono simp',
       media_url: 'https://images3.memedroid.com/images/UPLOADED520/608176531eceb.jpeg',
-      tags: ['memes de la urss'],
+      tags: ['MEMES DE LA URSS'],
       user: { id: 1 },
     })
 
     await post.save({
       title: 'pendejos',
       media_url: 'https://images7.memedroid.com/images/UPLOADED273/60860fbc7d3ee.jpeg',
-      tags: ['basado en hechos reales'],
+      tags: ['BASADO EN HECHOS REALES'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Cuanta razon',
       media_url: 'https://images3.memedroid.com/images/UPLOADED948/6036c4c39cbe3.jpeg',
-      tags: ['basado'],
+      tags: ['BASADO'],
       user: { id: 1 },
     })
     await post.save({
       title: 'todo bien en casa con este?',
       media_url: 'https://images3.memedroid.com/images/UPLOADED151/60971fd40e8ca.jpeg',
-      tags: ['basado'],
+      tags: ['BASADO'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Pasa.',
       media_url: 'https://images3.memedroid.com/images/UPLOADED935/6036e4908e4b5.jpeg',
-      tags: ['Android', 'iPhone', 'Carga'],
+      tags: ['ANDROID', 'IPHONE', 'CARGA'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Bueno para algo servira jugar tanto cod',
       media_url: 'https://images7.memedroid.com/images/UPLOADED946/60e3375e8b12f.jpeg',
-      tags: ['Rocket league', 'kim jong un', 'online', 'videojuegos'],
+      tags: ['ROCKET LEAGUE', 'KIM JONG UN', 'ONLINE', 'VIDEOJUEGOS'],
       user: { id: 1 },
     })
     await post.save({
       title: 'le tiene ganas',
       media_url: 'https://images3.memedroid.com/images/UPLOADED465/603ec250b2ae4.jpeg',
-      tags: ['batman'],
+      tags: ['BATMAN'],
       user: { id: 1 },
     })
     await post.save({
       title: 'lo hice con amor, asi como su abuela cada vez que les prepara la cena',
       media_url: 'https://images7.memedroid.com/images/UPLOADED224/6022f0e6b7895.jpeg',
-      tags: ['disney', 'perro', 'Smile dog'],
+      tags: ['DISNEY', 'PERRO', 'SMILE DOG'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Ergo',
       media_url: 'https://images3.memedroid.com/images/UPLOADED256/60fd7588991b6.jpeg',
-      tags: ['Ergo'],
+      tags: ['ERGO'],
       user: { id: 1 },
     })
     await post.save({
       title: 'C pueden m0rir',
       media_url: 'https://images3.memedroid.com/images/UPLOADED172/6078c0130d888.jpeg',
-      tags: ['basado'],
+      tags: ['BASADO'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Creo que es muy obvio a quien le queda mejor',
       media_url: 'https://images7.memedroid.com/images/UPLOADED555/60d4c39f4559e.jpeg',
-      tags: ['Netflix', 'youtube', 'homero', 'simpsons', 'Los Simpsons'],
+      tags: ['NETFLIX', 'YOUTUBE', 'HOMERO', 'SIMPSONS', 'LOS SIMPSONS'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Seh',
       media_url: 'https://images3.memedroid.com/images/UPLOADED258/5f9ecc5855e6e.jpeg',
-      tags: ['madre', 'compras', 'padre'],
+      tags: ['MADRE', 'COMPRAS', 'PADRE'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Eso',
       media_url: 'https://images3.memedroid.com/images/UPLOADED285/606c99a604038.jpeg',
-      tags: ['jet'],
+      tags: ['JET'],
       user: { id: 1 },
     })
     await post.save({
       title: 'tia may...',
       media_url: 'https://images7.memedroid.com/images/UPLOADED492/61786b508c515.jpeg',
-      tags: ['hombre araña', 'araña', 'tia may'],
+      tags: ['HOMBRE ARAÑA', 'ARAÑA', 'TIA MAY'],
       user: { id: 1 },
     })
     await post.save({
       title: '*un solo de piano salvaje empieza a sonar*',
       media_url: 'https://images7.memedroid.com/images/UPLOADED599/606e487d78501.jpeg',
-      tags: ['Zelda', 'Zelda BOTW'],
+      tags: ['ZELDA', 'ZELDA BOTW'],
       user: { id: 1 },
     })
     await post.save({
       title: 'Hola',
       media_url: 'https://images3.memedroid.com/images/UPLOADED363/5fca4f3ac26b5.jpeg',
-      tags: ['matematicas', 'vegeta', 'escuela'],
+      tags: ['MATEMATICAS', 'VEGETA', 'ESCUELA'],
       user: { id: 1 },
     })
   }

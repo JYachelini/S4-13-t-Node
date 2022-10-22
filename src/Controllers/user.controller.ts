@@ -111,7 +111,7 @@ export class UserController {
   async update(req: Request, res: Response) {
     try {
       const id = Number(req.params.id)
-      const { username, email, password } = req.body
+      const { username, email, password, avatar_url } = req.body
 
       const user_found = await this.userService.find({ username }, 'password')
 
@@ -125,7 +125,7 @@ export class UserController {
         return this.httpResponse.BadRequest(res, 'Email already exist.')
       }
 
-      const { user, error } = await this.userService.update({ id }, { username, email, password })
+      const { user, error } = await this.userService.update({ id }, { username, email, password, avatar_url })
       if (error) {
         return this.httpResponse.NotFound(res, error)
       }

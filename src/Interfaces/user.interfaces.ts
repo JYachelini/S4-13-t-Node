@@ -35,6 +35,7 @@ export interface IUser extends IUserDTO {
 }
 
 export interface UpdateUser {
+  avatar_url?: string
   username?: string
   email?: string
   password?: string

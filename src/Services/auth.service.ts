@@ -36,11 +36,15 @@ export class AuthService extends ConfigServer {
     return null
   }
 
-  async validateSocialMedia(data: LoginSocialMedia): Promise<IUser> {
+  async validateSocialMedia(data: LoginSocialMedia): Promise<IUser | null> {
     const { email, family_name, given_name, picture, sub } = data
-    const user_found = await this.userService.find({ email })
+    const user_found = await this.userService.find({ google_id: sub })
     if (user_found) return user_found
 
+    const userByEmail = await this.userService.find({ email })
+    if (userByEmail) {
+      return null
+    }
     return await this.userService.create({
       google_id: sub,
       email,

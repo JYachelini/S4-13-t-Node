@@ -21,7 +21,7 @@ export class CommentController extends ConfigServer {
 
       if (error) return this.httpResponse.BadRequest(res, error)
 
-      const post = await this.postService.find({ id: comment[0].post_id })
+      const post = await this.postService.find({ id: comment[0].postId })
       await this.postService.update({ id: comment[0].post_id }, { commentsCount: post?.commentsCount! - 1 })
       return this.httpResponse.Ok(res, comment[0])
     } catch (error) {

@@ -36,7 +36,7 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
       .put(
         (req, res, next) => this.middleware.getAccessToken(req, res, next),
         (req, res, next) => this.middleware.checkUserIsUserOwner(req, res, next),
-        (req, res, next) => this.middleware.updateValidator(req, res, next),
+        // (req, res, next) => this.middleware.updateValidator(req, res, next),
         (req, res) => {
           this.controller.update(req, res)
         }

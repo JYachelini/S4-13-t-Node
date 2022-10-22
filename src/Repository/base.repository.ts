@@ -43,7 +43,8 @@ export class BaseRepository<T extends BaseEntity> extends ConfigServer implement
     }
 
     if (tag) {
-      builder.where(`${alias}.tags && (ARRAY[:...tags])`, { tags: [tag.toUpperCase()] })
+      console.log(tag)
+      builder.where(`${alias}.tags && ARRAY[:...tags]`, { tags: [tag.toUpperCase()] })
     }
 
     const [list, total] = await builder.getManyAndCount()

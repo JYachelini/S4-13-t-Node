@@ -37,6 +37,7 @@ export class AuthController extends AuthService {
       const decoded: LoginSocialMedia = jwt_decode(token)
 
       const user = await this.validateSocialMedia(decoded)
+      if (user === null) return this.httpResponse.BadRequest(res, 'Email already exist.')
       const encode = await this.generateJWT(user)
       if (!encode) {
         return this.httpResponse.Unauthorized(res, 'No permissions.')
