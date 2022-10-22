@@ -1,12 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import * as jwt from 'jsonwebtoken'
-import passport, { AuthenticateOptions } from 'passport'
-import { RequestUser, RoleTypes } from '../Interfaces/user.interfaces'
+import { RoleTypes } from '../Interfaces/user.interfaces'
 import { HttpResponse } from '../Utils/http.response'
-import { PostService } from '../Services/post.service'
 import { UserService } from '../Services/user.service'
 import { ConfigServer } from '../Config/config'
-import { CommentService } from '../Services/comment.service'
 
 export class BaseMiddleware extends ConfigServer {
   constructor(
@@ -16,12 +13,8 @@ export class BaseMiddleware extends ConfigServer {
     super()
   }
 
-  passAuth(type: string, callback: AuthenticateOptions) {
-    return passport.authenticate(type, callback)
-  }
-
   checkAdminRole(req: Request, res: Response, next: NextFunction) {
-    const user = req.user as RequestUser
+    const user = req.user
 
     if (!user.role!.includes(RoleTypes.ADMIN)) {
       return this.httpResponse.Unauthorized(res, 'No permissions.')

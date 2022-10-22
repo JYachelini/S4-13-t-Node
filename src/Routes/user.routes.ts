@@ -15,7 +15,7 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
     )
 
     this.router.route('/user').get(
-      this.middleware.passAuth('jwt', { session: false }),
+      (req, res, next) => this.middleware.getAccessToken(req, res, next),
       (req, res, next) => this.middleware.checkAdminRole(req, res, next),
       (req, res) => {
         this.controller.findAll(req, res)
@@ -24,7 +24,6 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
 
     this.router.get(
       '/myinfo',
-      this.middleware.passAuth('jwt', { session: false }),
       (req, res, next) => this.middleware.getAccessToken(req, res, next),
       (req, res) => this.controller.getByAccessToken(req, res)
     )
@@ -35,7 +34,7 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
         this.controller.findWithPosts(req, res)
       })
       .put(
-        this.middleware.passAuth('jwt', { session: false }),
+        (req, res, next) => this.middleware.getAccessToken(req, res, next),
         (req, res, next) => this.middleware.checkUserIsUserOwner(req, res, next),
         (req, res, next) => this.middleware.updateValidator(req, res, next),
         (req, res) => {
@@ -43,7 +42,7 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
         }
       )
       .delete(
-        this.middleware.passAuth('jwt', { session: false }),
+        (req, res, next) => this.middleware.getAccessToken(req, res, next),
         (req, res, next) => this.middleware.checkUserIsUserOwner(req, res, next),
         (req, res) => {
           this.controller.remove(req, res)

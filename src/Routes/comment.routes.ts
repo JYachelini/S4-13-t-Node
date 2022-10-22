@@ -10,7 +10,6 @@ export class CommentRouter extends BaseRouter<CommentController, CommentMiddlewa
   routes(): void {
     this.router.delete(
       '/comment/:id',
-      this.middleware.passAuth('jwt', { session: false }),
       (req, res, next) => this.middleware.getAccessToken(req, res, next),
       (req, res, next) => this.middleware.checkUserIsCommentOwner(req, res, next),
       (req, res) => this.controller.deleteComment(req, res)
@@ -18,7 +17,6 @@ export class CommentRouter extends BaseRouter<CommentController, CommentMiddlewa
 
     this.router.post(
       '/comment/:id/reply',
-      this.middleware.passAuth('jwt', { session: false }),
       (req, res, next) => this.middleware.getAccessToken(req, res, next),
       (req, res, next) => this.middleware.replyCommentValidator(req, res, next),
       (req, res) => this.controller.replyComment(req, res)

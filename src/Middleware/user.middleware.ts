@@ -1,8 +1,7 @@
 import { validate } from 'class-validator'
 import { NextFunction, Request, Response } from 'express'
 import { UpdateUserDTO, UserDTO } from '../DTO/user.dto'
-import { IUser, RequestUser } from '../Interfaces/user.interfaces'
-import { UserService } from '../Services/user.service'
+import { IUser } from '../Interfaces/user.interfaces'
 import { BaseMiddleware } from './base.middleware'
 
 export class UserMiddleware extends BaseMiddleware {
@@ -11,7 +10,7 @@ export class UserMiddleware extends BaseMiddleware {
   }
 
   async checkUserIsUserOwner(req: Request, res: Response, next: NextFunction) {
-    const user = req.user as RequestUser
+    const user = req.user
     const id = Number(req.params.id)
 
     const user_found = await this.userService.find({ id })

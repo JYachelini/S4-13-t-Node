@@ -22,7 +22,7 @@ export class BaseRepository<T extends BaseEntity> extends ConfigServer implement
   }
 
   async list(alias: string, relation?: string, sets?: SetsList): Promise<[T[], number]> {
-    const { size, page, sort, word, property } = sets!
+    const { size, page, sort, word, property, tag } = sets!
 
     const builder = (await this.repository).createQueryBuilder(alias)
 
@@ -39,7 +39,11 @@ export class BaseRepository<T extends BaseEntity> extends ConfigServer implement
     if (sort === 'like') builder.orderBy(`${alias}.likesCount`, 'DESC')
 
     if (word && property) {
-      builder.where(`${alias}.${property} like :word`, { word: `%${word}%` })
+      builder.where(`LOWER(${alias}.${property}) Like LOWER('%${word}%')`)
+    }
+
+    if (tag) {
+      builder.where(`${alias}.tags && (ARRAY[:...tags])`, { tags: [tag.toUpperCase()] })
     }
 
     const [list, total] = await builder.getManyAndCount()

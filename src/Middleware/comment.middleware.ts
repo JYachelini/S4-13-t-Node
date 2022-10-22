@@ -2,7 +2,6 @@ import { validate } from 'class-validator'
 import { NextFunction, Request, Response } from 'express'
 import { ReplyDTO } from '../DTO/reply.dto'
 import { IReply } from '../Interfaces/reply.interface'
-import { RequestUser } from '../Interfaces/user.interfaces'
 import { CommentService } from '../Services/comment.service'
 import { BaseMiddleware } from './base.middleware'
 
@@ -12,7 +11,7 @@ export class CommentMiddleware extends BaseMiddleware {
   }
 
   async checkUserIsCommentOwner(req: Request, res: Response, next: NextFunction) {
-    const user = req.user as RequestUser
+    const user = req.user
     const id = Number(req.params.id)
 
     const comment = await this.commentService.findWithUser({ id })

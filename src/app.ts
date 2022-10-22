@@ -6,8 +6,6 @@ import * as swaggerDocument from './swagger.json'
 import { ConfigServer } from './Config/config'
 import { PostRouter } from './Routes/post.routes'
 import { UserRouter } from './Routes/user.routes'
-import { LoginStrategy } from './Strategies/login.strategy'
-import { JwtStrategy } from './Strategies/jwt.strategy'
 import { AuthRouter } from './Routes/auth.routes'
 import { CommentRouter } from './Routes/comment.routes'
 
@@ -19,8 +17,6 @@ export class Server extends ConfigServer {
     super()
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
-
-    this.passportUse()
 
     this.dbConnect()
       .then(() => {
@@ -38,10 +34,6 @@ export class Server extends ConfigServer {
 
     this.app.use(this.routers())
     this.listen()
-  }
-
-  passportUse() {
-    return [new LoginStrategy().use, new JwtStrategy().use]
   }
 
   routers(): express.Router[] {

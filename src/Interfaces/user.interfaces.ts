@@ -31,14 +31,7 @@ export interface IUser extends IUserDTO {
   actual_page?: number
   size?: number
   likesCount?: number
-}
-
-export interface RequestUser extends Express.User {
-  id: number
-  sub: number
-  role: RoleTypes[]
-  iat: number
-  exp: number
+  sub?: number
 }
 
 export interface UpdateUser {

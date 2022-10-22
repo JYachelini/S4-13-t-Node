@@ -9,6 +9,7 @@ export interface SetsList {
   sort: any
   word?: string
   property?: string
+  tag?: string
 }
 
 export type Id = number

@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { PostService } from '../Services/post.service'
 import { HttpResponse } from '../Utils/http.response'
 import { ConfigServer } from '../Config/config'
-import { IUser, RequestUser } from '../Interfaces/user.interfaces'
+import { IUser } from '../Interfaces/user.interfaces'
 export class PostController extends ConfigServer {
   constructor(
     private readonly postService: PostService = new PostService(),
@@ -12,9 +12,11 @@ export class PostController extends ConfigServer {
   }
   async create(req: Request, res: Response) {
     try {
-      const user = req.user as RequestUser
+      const user = req.user
       const post = req.body
+      post.tags = post.tags.map((tag: any) => tag.toUpperCase())
       post.user = user.sub
+
       const result = await this.postService.create(post)
       this.httpResponse.Ok(res, { message: 'Post Created Successfully.', post: result })
     } catch (error) {
@@ -24,12 +26,13 @@ export class PostController extends ConfigServer {
 
   async findAll(req: Request, res: Response) {
     try {
-      const { page = '1', size = '20', sort = 'desc', word } = req.query
+      const { page = '1', size = '20', sort = 'desc', word, tag } = req.query
       const [posts, total, last_page] = await this.postService.findAllWithPagination(
         Number(page),
         Number(size),
         sort,
-        word
+        word,
+        tag
       )
       return this.httpResponse.Ok(res, { posts, actual_page: Number(page), size: Number(size), total, last_page })
     } catch (error) {
