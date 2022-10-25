@@ -1,4 +1,3 @@
-import { Request } from 'express'
 import { IUser } from '../../Interfaces/user.interfaces'
 
 export {}
